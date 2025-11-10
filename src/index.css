@@ -6,3 +6,29 @@
 body {
     font-family: "PT Sans", sans-serif;
 }
+
+
+/* :root {
+  --color-bg: #FFFBDE;
+  --color-text: #0A0A0A;
+  --color-primary: #096B68;
+  --color-secondary: #129990;
+  --color-accent: #90D1CA;
+} */
+
+
+/* [data-theme="dark"] {
+  --color-bg: #0A0A0A;
+  --color-text: #FFFBDE;
+  --color-primary: #129990;
+  --color-secondary: #90D1CA;
+  --color-accent: #096B68;
+} */
+
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #026b68 !important; 
+}
+
+

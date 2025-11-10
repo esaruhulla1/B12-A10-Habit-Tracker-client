@@ -3,6 +3,8 @@ import Banner from '../Components/Home/Banner';
 import WhyBuildHabits from '../Components/Home/WhyBuildHabits';
 import TrackProgress from '../Components/Home/TrackProgress';
 import FeaturedTestimonials from '../Components/Home/FeaturedTestimonials';
+import AppFeatures from '../Components/Home/AppFeatures';
+import Faqs from '../Components/Home/Faqs';
 
 
 const Home = () => {
@@ -11,7 +13,9 @@ const Home = () => {
             <Banner></Banner>
             <WhyBuildHabits></WhyBuildHabits>
             <FeaturedTestimonials></FeaturedTestimonials>
-            {/* <TrackProgress></TrackProgress> */}
+            <TrackProgress></TrackProgress>
+            <AppFeatures></AppFeatures>
+            <Faqs></Faqs>
             
         </div>
     );

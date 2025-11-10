@@ -3,7 +3,8 @@ import { FaStar } from "react-icons/fa";
 
 const FeaturedTestimonials = () => {
   return (
-    <section className="w-full bg-[#f9f9f9] py-20 text-[#364436] relative overflow-hidden">
+    //bg-[#f9f9f9]
+    <section className="w-full  py-20 bg-white text-[#364436] relative overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between px-6 lg:px-12 gap-10">
         {/* LEFT SIDE */}
         <div className="lg:w-1/2 space-y-6">

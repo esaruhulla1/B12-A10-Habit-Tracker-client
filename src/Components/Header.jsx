@@ -5,7 +5,7 @@ import Header_logo_2 from '../assets/Header-logo-2.png';
 import { AuthContext } from '../Context/AuthContext';
 const Header = () => {
     const {user} = useContext(AuthContext)
-    // console.log('the user is', user);
+    console.log('the user is', user);
     
     const links = <>
         <li className='underline-offset-3 text-[15px]'><NavLink to="/">Home</NavLink></li>

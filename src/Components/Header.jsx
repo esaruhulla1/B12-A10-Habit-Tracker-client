@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, NavLink } from 'react-router';
 import Header_logo from '../assets/Header-logo.png';
 import Header_logo_2 from '../assets/Header-logo-2.png';
+import { AuthContext } from '../Context/AuthContext';
 const Header = () => {
+    const {user} = useContext(AuthContext)
+    // console.log('the user is', user);
+    
     const links = <>
-        <li><NavLink to="/">Home</NavLink></li>
-        <li><NavLink to="/">Habits</NavLink></li>
-        <li><NavLink to="/">Add Habit</NavLink></li>
-        <li><NavLink to="/">My Habits</NavLink></li>
+        <li className='underline-offset-3 text-[15px]'><NavLink to="/">Home</NavLink></li>
+        <li className='underline-offset-3 text-[15px]'><NavLink to="/">Habits</NavLink></li>
+        <li className='underline-offset-3 text-[15px]'><NavLink to="/">Add Habit</NavLink></li>
+        <li className='underline-offset-3 text-[15px]'><NavLink to="/">My Habits</NavLink></li>
 
     </>
     return (
@@ -35,14 +39,30 @@ const Header = () => {
                         </div>
                     </div>
                     <div className="navbar-center hidden lg:flex">
-                        <ul className="menu menu-horizontal px-1">
+                        <ul className="menu menu-horizontal px-1 space-x-3">
                             {links}
                         </ul>
                     </div>
-                    <div className="navbar-end gap-3">
+                    {/* <div className="navbar-end gap-3">
                         <Link to="/login">Login</Link>
                         <Link to="/signup">SignUp</Link>
+                    </div> */}
+                    <div className="navbar-end gap-5">
+                        <Link
+                            to="/login"
+                            className="text-gray-800 font-semibold text-[14px] hover:text-[#f47000] relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#f47000] hover:after:w-full after:transition-all after:duration-300"
+                        >
+                            Login
+                        </Link>
+
+                        <Link
+                            to="/signup"
+                            className="text-gray-800 font-semibold text-[14px] hover:text-[#f47000] relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#f47000] hover:after:w-full after:transition-all after:duration-300"
+                        >
+                            Sign Up
+                        </Link>
                     </div>
+
                 </div>
             </div>
         </div>

@@ -37,10 +37,10 @@ const FeaturedTestimonials = () => {
           <div className="absolute top-14 right-0 w-[90%] bg-[#e5e7e7] rounded-2xl h-[95%] rotate-2 translate-y-6 scale-90"></div>
 
           {/* --- Card Stack Layer 2 --- */}
-          <div className="absolute top-8 right-0 w-[95%] bg-[#b2c6a5]/40 rounded-2xl h-[95%] -rotate-1 translate-y-3 scale-95"></div>
+          <div className="absolute top-8 right-0 w-[95%] bg-[#e5e7e7]/40 rounded-2xl h-[95%] -rotate-1 translate-y-3 scale-95"></div>
 
           {/* --- Main Card --- */}
-          <div className="bg-white text-[#364436] rounded-2xl shadow-2xl p-8 max-w-md w-full relative z-10">
+          <div className="bg-white text-[#364436] rounded-2xl shadow-2xl p-8 max-w-[80%] w-full relative z-10">
             <span className="text-5xl text-[#f47000] font-serif leading-none">“</span>
             <p className="text-lg italic mt-2 mb-6">
               Habit Tracker changed how I approach my goals. 

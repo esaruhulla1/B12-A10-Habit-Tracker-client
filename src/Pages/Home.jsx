@@ -5,12 +5,14 @@ import TrackProgress from '../Components/Home/TrackProgress';
 import FeaturedTestimonials from '../Components/Home/FeaturedTestimonials';
 import AppFeatures from '../Components/Home/AppFeatures';
 import Faqs from '../Components/Home/Faqs';
+import Featured from '../Components/Home/Featured';
 
 
 const Home = () => {
     return (
         <div className='max-w-[1820px]  mx-auto'>
             <Banner></Banner>
+            <Featured></Featured>
             <WhyBuildHabits></WhyBuildHabits>
             <FeaturedTestimonials></FeaturedTestimonials>
             <TrackProgress></TrackProgress>

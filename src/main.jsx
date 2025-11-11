@@ -9,6 +9,7 @@ import Login from './Pages/Login.jsx';
 import SingUp from './Pages/SingUp.jsx';
 import AuthProvider from './Provider/AuthProvider.jsx';
 import PriveteRoute from './PriveteRoute.jsx';
+import Habits from './Pages/Habits.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/habits',
-        element: <p>all haibits</p>
+        element: <Habits></Habits>
       },
       {
         path: '/add-habit',

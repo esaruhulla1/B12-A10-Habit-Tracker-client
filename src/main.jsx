@@ -12,6 +12,7 @@ import PriveteRoute from './PriveteRoute.jsx';
 import Habits from './Pages/Habits.jsx';
 import AddHabit from './Pages/AddHabit.jsx';
 import MyHabits from './Pages/MyHabits.jsx';
+import UpdateHabit from './Pages/UpdateHabit.jsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: '/my-habit',
         element: <PriveteRoute><MyHabits></MyHabits></PriveteRoute>
+      },
+      {
+        path: '/update/:id',
+        element: <PriveteRoute><UpdateHabit></UpdateHabit></PriveteRoute>
       },
       {
         path: '/',

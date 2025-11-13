@@ -3,12 +3,21 @@ import { useParams } from "react-router";
 import Swal from "sweetalert2";
 import Loading from "../Components/Loading";
 
+// Badge system
+const badges = [
+  { streak: 1, label: "🥇 Start Badge" },
+  { streak: 10, label: "🥇 On 10 Badge" },
+  { streak: 20, label: "🏅 On 20 Badge" },
+  { streak: 30, label: "⏰ Time Master Badge" },
+];
+
 const HabitDetails = () => {
   const { id } = useParams();
   const [habit, setHabit] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
 
-  // 🔹 Fetch habit details
+  // Fetch habit details
   const fetchHabit = async () => {
     try {
       const res = await fetch(`http://localhost:3000/habit/${id}`);
@@ -23,9 +32,9 @@ const HabitDetails = () => {
 
   useEffect(() => {
     fetchHabit();
-  }, [id,]);
+  }, [id]);
 
-  // 🔹 Format date (DD-MM-YYYY)
+  // Format date as DD-MM-YYYY
   const getFormattedDate = () => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, "0");
@@ -34,63 +43,55 @@ const HabitDetails = () => {
     return `${day}-${month}-${year}`;
   };
 
-  // 🔹 Calculate current streak (continuous days only)
-  const calculateCurrentStreak = () => {
-    if (!habit?.completionHistory || habit.completionHistory.length === 0)
-      return 0;
+  // Calculate streak
+  const calculateStreak = () => {
+    if (!habit || !habit.completionHistory.length) return 0;
+    const dates = habit.completionHistory
+      .map(d => new Date(d.split("-").reverse().join("-")))
+      .sort((a, b) => b - a);
 
-    const sortedDates = [...habit.completionHistory]
-      .map((d) => {
-        const [day, month, year] = d.split("-");
-        return new Date(`${year}-${month}-${day}`);
-      })
-      .sort((a, b) => b - a); // latest first
-
-    let streak = 1;
-    for (let i = 1; i < sortedDates.length; i++) {
-      const diffDays =
-        (sortedDates[i - 1] - sortedDates[i]) / (1000 * 60 * 60 * 24);
-      if (diffDays === 1) streak++;
-      else break; // break যদি একদিন মিস হয়
+    let streak = 0;
+    let currentDate = new Date();
+    for (let date of dates) {
+      const diff = (currentDate - date) / (1000 * 60 * 60 * 24);
+      if (diff <= 1) {
+        streak++;
+        currentDate = new Date(date);
+        currentDate.setDate(currentDate.getDate() - 1);
+      } else break;
     }
     return streak;
   };
 
-  // 🔹 Calculate 30-day progress (missed days ignored)
-  const calculateProgressLast30Days = () => {
-    if (!habit?.completionHistory || habit.completionHistory.length === 0)
-      return 0;
+  // Get latest badge
+  const getBadge = (streak) => {
+    let badge = badges[0].label;
+    for (let b of badges) {
+      if (streak >= b.streak) badge = b.label;
+    }
+    return badge;
+  };
 
+  // Calculate progress (% of last 30 days)
+  const calculateProgress = () => {
+    if (!habit) return 0;
     const today = new Date();
-    const past30 = new Date();
-    past30.setDate(today.getDate() - 29); // last 30 days
-
-    const completedDates = habit.completionHistory.map((d) => {
-      const [day, month, year] = d.split("-");
-      return new Date(`${year}-${month}-${day}`);
+    const last30 = Array.from({ length: 30 }, (_, i) => {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      return d.toISOString().split("T")[0];
     });
 
-    const completedInLast30 = completedDates.filter(
-      (d) => d >= past30 && d <= today
-    );
+    const completedDates = habit.completionHistory.map(d => {
+      const [dd, mm, yyyy] = d.split("-");
+      return new Date(`${yyyy}-${mm}-${dd}`).toISOString().split("T")[0];
+    });
 
-    const uniqueDays = new Set(completedInLast30.map((d) => d.toDateString()));
-    const progressPercent = (uniqueDays.size / 30) * 100;
-
-    return Math.min(progressPercent, 100);
+    const completedCount = last30.filter(d => completedDates.includes(d)).length;
+    return Math.round((completedCount / 30) * 100);
   };
 
-  // 🔹 Badge system
-  const getBadge = (streak) => {
-    if (streak >= 30)
-      return { label: "⏰ Time Master Badge", color: "#7b1fa2" };
-    if (streak >= 20) return { label: "🏅 On 20 Badge", color: "#1565c0" };
-    if (streak >= 10) return { label: "🥇 On 10 Badge", color: "#f57c00" };
-    if (streak >= 1) return { label: "🟢 Start Badge", color: "#2e7d32" };
-    return { label: "⭐ Keep Going!", color: "#90A4AE" };
-  };
-
-  // 🔹 Handle mark complete
+  // Mark habit complete
   const handleMarkComplete = async () => {
     const today = getFormattedDate();
 
@@ -103,130 +104,78 @@ const HabitDetails = () => {
       return;
     }
 
+    setUpdating(true);
     try {
-      const res = await fetch(
-        `http://localhost:3000/habits/complete/${habit._id}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ date: today }),
-        }
-      );
-
-      const result = await res.json();
-
-      if (result.success) {
-        await fetchHabit();
-        Swal.fire({
-          icon: "success",
-          title: "Marked Complete! ✅",
-          text: "Great job! Keep it up!",
-        });
-      } else {
-        Swal.fire({
-          icon: "info",
-          title: "Already Done!",
-          text: "You’ve already marked this habit complete today.",
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Could not update completion history.",
+      const res = await fetch(`http://localhost:3000/habits/complete/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date: today }),
       });
+      const data = await res.json();
+      if (data.success) {
+        setHabit(prev => ({
+          ...prev,
+          completionHistory: [...prev.completionHistory, today],
+        }));
+        Swal.fire("Success!", "Marked as complete for today.", "success");
+      } else {
+        Swal.fire("Info", data.message, "info");
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to mark complete.", "error");
     }
+    setUpdating(false);
   };
 
-  if (loading)
-    return <Loading></Loading>
-  if (!habit)
-    return <p className="text-center text-red-500 mt-10">Habit not found!</p>;
-
-  const streak = calculateCurrentStreak();
-  const progress = calculateProgressLast30Days();
-  const badge = getBadge(streak);
+  if (loading) return <Loading />;
 
   return (
-    <div className="min-h-screen  py-10 px-5">
-      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-10 border border-gray-200">
-        {/* 🖼️ Image */}
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md mt-6">
+      <div className="flex flex-col md:flex-row gap-6">
         <img
           src={habit.image}
-          alt="Habit"
-          className="w-full h-64 object-cover rounded-xl mb-6"
+          alt={habit.habitTitle}
+          className="w-full md:w-1/3 rounded-lg object-cover"
         />
-
-        {/* 🏷️ Title + Category */}
-        <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
-          <h1 className="text-3xl font-bold text-[#096B68]">
-            {habit.habitTitle}
-          </h1>
-          <span className="px-3 py-1 bg-[#90D1CA] text-[#096B68] rounded-full font-semibold">
-            {habit.category}
-          </span>
-        </div>
-
-        {/* 📘 Description */}
-        <p className="text-gray-700 mb-6">{habit.description}</p>
-
-        {/* 📊 Progress */}
-        <div className="mb-6">
-          <p className="font-semibold text-gray-700 mb-2">
-            Progress (Last 30 Days): {progress.toFixed(0)}%
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold mb-2">{habit.habitTitle}</h1>
+          <p className="text-gray-700 mb-4">{habit.description}</p>
+          <p className="mb-2">
+            <span className="font-semibold">Category:</span> {habit.category}
           </p>
-          <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
-            <div
-              className="h-4 rounded-full transition-all duration-700 ease-in-out"
-              style={{
-                width: `${progress}%`,
-                background:
-                  "linear-gradient(90deg, #096B68, #129990, #f47000)",
-              }}
-            ></div>
+          <p className="mb-2">
+            <span className="font-semibold">Creator:</span>  {habit.userName} 
+          </p>
+          <p className="mb-2">
+            <span  className="font-semibold">Email:</span>  {habit.userEmail}
+          </p>
+
+          <div className="my-4">
+            <p className="font-semibold mb-1">Progress ({calculateProgress()}%)</p>
+            <div className="w-full bg-gray-200 rounded-full h-4">
+              <div
+                className="bg-green-500 h-4 rounded-full"
+                style={{ width: `${calculateProgress()}%` }}
+              ></div>
+            </div>
           </div>
-        </div>
 
-        {/* 🔥 Streak */}
-        <div className="mb-4 flex items-center gap-2">
-          <span className="text-xl">🔥</span>
-          <span className="font-bold text-[#f47000] text-lg">
-            {streak} Day{streak > 1 ? "s" : ""} Streak
-          </span>
-        </div>
+          <p className="mb-2">
+            <span className="font-semibold"> Current Streak:</span> {calculateStreak()}  day(s) 
+          </p>
+          <p className="mb-4">
+            <span className="font-semibold ">Badge:</span> <span className="bg-[#89e223] p-2 rounded-lg">{getBadge(calculateStreak())}</span>
+          </p>
 
-        {/* 🏅 Badge */}
-        <div className="mb-6">
-          <p
-            className="font-bold text-lg px-4 py-2 rounded-xl inline-block"
-            style={{
-              backgroundColor: `${badge.color}20`,
-              color: badge.color,
-            }}
+          <button
+            onClick={handleMarkComplete}
+            disabled={updating}
+            className="bg-[#14a8a3] text-white px-6 py-2 rounded-lg hover:bg-[#59d4d0] transition disabled:opacity-50"
           >
-            {badge.label}
-          </p>
+            {updating ? "Updating..." : "Mark Complete"}
+          </button>
         </div>
-
-        {/* 👤 Creator Info */}
-        <div className="mb-6 text-sm text-gray-600">
-          <p>
-            <span className="font-semibold">Created by:</span>{" "}
-            {habit.userName}
-          </p>
-          <p>
-            <span className="font-semibold">Email:</span> {habit.userEmail}
-          </p>
-        </div>
-
-        {/* ✅ Mark Complete */}
-        <button
-          onClick={handleMarkComplete}
-          className="w-full bg-[#096B68] hover:bg-[#129990] text-white py-3 rounded-xl font-bold text-lg transition duration-300"
-        >
-          Mark Complete
-        </button>
       </div>
     </div>
   );

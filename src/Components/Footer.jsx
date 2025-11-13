@@ -2,7 +2,7 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { IoLogoModelS } from "react-icons/io"; // temporary logo icon (I have replace with my own logo)
 import { Link } from "react-router";
-import Header_logo_2 from '../assets/Header-logo-2.png';
+import Header_logo_2 from '../assets/Header-log.png';
 
 const Footer = () => {
   return (
@@ -14,11 +14,11 @@ const Footer = () => {
           <div className="flex items-center space-x-2">
             {/* <IoLogoModelS className="text-3xl text-blue-500" />
             <h2 className="text-xl font-bold text-white">Habit Tracker</h2> */}
-            <a className="btn btn-ghost text-xl font-bold">
-              <img className='max-w-[60px]  -ml-8 -mr-4' src={Header_logo_2} alt="" />
-              Habit Tracker</a>
+            <a className="btn btn-ghost text-xl font-bold ">
+              <img className='max-w-[50px]  -ml-8 -mr-2 -mt-3' src={Header_logo_2} alt="" />
+              Habit Tracker </a>
           </div>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-gray-400 ">
             Build better habits, stay productive, and track your daily progress easily.
           </p>
         </div>

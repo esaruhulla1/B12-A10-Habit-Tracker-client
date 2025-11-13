@@ -48,7 +48,7 @@ const Header = () => {
                     <div className='flex items-center gap-2'>
                         <Link to="/" className="btn btn-ghost  -ml-2 text-xl">
                             {/* <img className='max-w-[60px] -ml-4' src={Header_logo_2} alt="logo" /> */}
-                            <img className='max-w-[50px] -ml-8' src={Header_logo_2} alt="logo" />
+                            <img className='max-w-[50px] -ml-6' src={Header_logo_2} alt="logo" />
                             <span className='-ml-2 -mb-2'>Habit Tracker</span></Link>
                     </div>
                 </div>

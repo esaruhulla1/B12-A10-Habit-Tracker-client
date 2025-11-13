@@ -8,10 +8,10 @@ const FeaturedTestimonials = () => {
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between px-6 lg:px-12 gap-10">
         {/* LEFT SIDE */}
         <div className="lg:w-1/2 space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-[#364436]">
+          <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-[#096b68]">
             Trusted by thousands <br /> of habit builders worldwide.
           </h2>
-          <p className="text-[#364436]/80 text-base sm:text-lg max-w-md">
+          <p className="text-gray-700 text-base sm:text-lg max-w-md">
             Hear what our users say about their daily growth journey. 
             Building small habits every day has transformed their focus, 
             confidence, and productivity.
@@ -26,7 +26,7 @@ const FeaturedTestimonials = () => {
           </div>
 
           {/* Button */}
-          <button className="mt-4 bg-[#f47000] text-white font-semibold px-6 py-3 rounded-full hover:bg-[#364436] transition-all duration-300">
+          <button className="mt-4 bg-[#096b68] hover:bg-[#129990] text-white font-semibold px-6 py-3 rounded-full  transition-all duration-300">
             Join Habit Tracker Now
           </button>
         </div>

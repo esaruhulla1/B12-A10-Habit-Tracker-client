@@ -6,7 +6,7 @@ const TrackProgress = () => {
       <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-16">
         {/* Text Section */}
         <div className="lg:w-1/2 text-center lg:text-left">
-          <h2 className="text-3xl sm:text-4xl font-bold text-darkGreen dark:text-offWhite mb-4">
+          <h2 className="text-3xl text-[#096b68] md:text-4xl  font-bold  dark:text-offWhite mb-4">
             Track Your Progress & Build Streaks
           </h2>
           <p className="text-darkGreen/70 dark:text-offWhite/70 text-base sm:text-lg mb-6 leading-relaxed">
@@ -16,7 +16,7 @@ const TrackProgress = () => {
           </p>
 
           <div className="flex justify-center lg:justify-start">
-            <button className="bg-primary text-offWhite font-semibold px-6 py-3 rounded-full shadow hover:bg-darkGreen hover:text-offWhite transition">
+            <button className=" text-white text-offWhite font-semibold px-6 py-3 rounded-full shadow bg-[#096b68] hover:bg-[#129990] hover:text-offWhite transition">
               Start Tracking
             </button>
           </div>

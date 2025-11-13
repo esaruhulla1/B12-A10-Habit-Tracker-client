@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link, NavLink } from 'react-router';
-import Header_logo_2 from '../assets/Header-logo-2.png';
+import Header_logo_2 from '../assets/Header-log.png';
 import { AuthContext } from '../Context/AuthContext';
 import { FaUserCircle } from "react-icons/fa";
 
@@ -46,10 +46,10 @@ const Header = () => {
                     </div>
 
                     <div className='flex items-center gap-2'>
-                        {/* <img className='max-w-[60px] -ml-4' src={Header_logo_2} alt="logo" /> */}
                         <Link to="/" className="btn btn-ghost  -ml-2 text-xl">
-                        <img className='max-w-[60px] -ml-8' src={Header_logo_2} alt="logo" />
-                        <span className='-ml-2 -mb-2'>Habit Tracker</span></Link>
+                            {/* <img className='max-w-[60px] -ml-4' src={Header_logo_2} alt="logo" /> */}
+                            <img className='max-w-[50px] -ml-8' src={Header_logo_2} alt="logo" />
+                            <span className='-ml-2 -mb-2'>Habit Tracker</span></Link>
                     </div>
                 </div>
 
@@ -61,19 +61,19 @@ const Header = () => {
                 {/* RIGHT */}
                 <div className="navbar-end relative">
                     {loading ? (
-                        <span className="loading loading-spinner text-primary"></span>
+                        <span className="loading loading-spinner text-[#096e6a]"></span>
                     ) : !user ? (
                         <div className="flex gap-5">
                             <Link
                                 to="/login"
-                                className="text-gray-800 font-semibold text-[14px] hover:text-[#f47000] relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#f47000] hover:after:w-full after:transition-all after:duration-300"
+                                className="text-[#096e6a] font-semibold text-[14px] hover:text-[#5bdba8] relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#5bdba8] hover:after:w-full after:transition-all after:duration-300"
                             >
                                 Login
                             </Link>
 
                             <Link
                                 to="/signup"
-                                className="text-gray-800 font-semibold text-[14px] hover:text-[#f47000] relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#f47000] hover:after:w-full after:transition-all after:duration-300"
+                                className="text-[#096e6a] font-semibold text-[14px] hover:text-[#5bdba8] relative after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 after:h-[2px] after:bg-[#5bdba8] hover:after:w-full after:transition-all after:duration-300"
                             >
                                 Sign Up
                             </Link>
@@ -89,7 +89,7 @@ const Header = () => {
                                     <img
                                         src={user.photoURL}
                                         alt="User"
-                                        className="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-[#f47000] transition-all"
+                                        className="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-[#096e6a] transition-all"
                                     />
                                 ) : (
                                     <FaUserCircle className="text-3xl text-gray-600" />
@@ -103,7 +103,7 @@ const Header = () => {
                                     <p className="text-sm text-gray-600 mb-3">{user.email}</p>
                                     <button
                                         onClick={handleLogout}
-                                        className="w-full text-left px-3 py-2 bg-[#f47000] text-white rounded-lg hover:bg-[#d45e00] transition-colors"
+                                        className="w-full text-left px-3 py-2 bg-[#096e6a] text-white rounded-lg hover:bg-[#32a09c] transition-colors"
                                     >
                                         Log Out
                                     </button>

@@ -155,7 +155,7 @@ const SignUp = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#f47000] text-white py-2 rounded-lg font-semibold hover:bg-[#d65f00] transition"
+            className="w-full bg-[#096e6a] text-white py-2 rounded-lg font-semibold hover:bg-[#29a19d] transition"
           >
             {loading ? "Registering..." : "Sign Up"}
           </button>
@@ -177,7 +177,7 @@ const SignUp = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-[#f47000] font-medium hover:underline"
+            className="text-[#5bdba8] font-medium hover:underline"
           >
             Login
           </Link>

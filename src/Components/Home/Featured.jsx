@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HabitCard from "../HabitCard";
+import Loading from "../Loading";
+import ErrorPage from "../ErrorPage";
 
 const Featured = () => {
     const [data, setData] = useState([]);
@@ -26,23 +28,19 @@ const Featured = () => {
 
     if (loading)
         return (
-            <div className="text-center py-20 text-[#364436] text-lg font-semibold">
-                Loading Featured Habits...
-            </div>
+            <Loading></Loading>
         );
 
     if (error)
         return (
-            <div className="text-center py-20 text-red-500 text-lg font-semibold">
-                Error: {error}
-            </div>
+            <ErrorPage></ErrorPage>
         );
 
     return (
         <section className="py-20 ">
             <div className="container mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#364436]">
-                    🌟 Featured Habits
+                <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-[#096b68]">
+                     Featured Habits
                 </h2>
 
                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">

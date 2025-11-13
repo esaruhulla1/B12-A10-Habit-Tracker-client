@@ -1,8 +1,10 @@
+
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
-import { Pencil, Trash2, CheckCircle2 } from "lucide-react";
+import { Pencil, Trash2, CheckCircle2, Flame } from "lucide-react";
+import Loading from "../Components/Loading";
 
 const MyHabits = () => {
     const { user } = useContext(AuthContext);
@@ -21,22 +23,63 @@ const MyHabits = () => {
             .catch((err) => console.error(err));
     }, [user?.email]);
 
-    // 🔹 Helper: calculate current streak
+    // 🔹 Helper: calculate current streak (based on consecutive days)
+    //   const calculateStreak = (history) => {
+    //     if (!history || history.length === 0) return 0;
+
+    //     // Convert to Date objects & sort (latest first)
+    //     const sorted = history
+    //       .map((d) => new Date(d.split("-").reverse().join("-")))
+    //       .sort((a, b) => b - a);
+
+    //     let streak = 1;
+    //     for (let i = 1; i < sorted.length; i++) {
+    //       const diff = (sorted[i - 1] - sorted[i]) / (1000 * 60 * 60 * 24);
+    //       if (diff === 1) streak++;
+    //       else break; // break streak if a day is missed
+    //     }
+    //     return streak;
+    //   };
+
+    // 🔹 Helper: calculate current streak (only last consecutive days)
     const calculateStreak = (history) => {
         if (!history || history.length === 0) return 0;
+
+        // Convert to Date objects & sort ascending (oldest first)
         const sorted = history
             .map((d) => new Date(d.split("-").reverse().join("-")))
-            .sort((a, b) => b - a);
+            .sort((a, b) => a - b);
 
         let streak = 1;
+        let currentStreak = 1;
+
         for (let i = 1; i < sorted.length; i++) {
             const diff =
-                (sorted[i - 1] - sorted[i]) / (1000 * 60 * 60 * 24); // days difference
-            if (diff === 1) streak++;
-            else break;
+                (sorted[i] - sorted[i - 1]) / (1000 * 60 * 60 * 24); // difference in days
+
+            if (diff === 1) {
+                currentStreak++;
+                streak = Math.max(streak, currentStreak);
+            } else {
+                // ⛔️ Break streak if a day is missed — reset counter
+                currentStreak = 1;
+            }
         }
-        return streak;
+
+        // 🧩 এখন শুধু সর্বশেষ ধারাবাহিক অংশটা বের করা হবে
+        // মানে শেষ দিক থেকে যত দিন টানা চলেছে
+        const reversed = sorted.reverse();
+        let latestStreak = 1;
+        for (let i = 1; i < reversed.length; i++) {
+            const diff =
+                (reversed[i - 1] - reversed[i]) / (1000 * 60 * 60 * 24);
+            if (diff === 1) latestStreak++;
+            else break; // break যদি একদিন মিস হয়
+        }
+
+        return latestStreak;
     };
+
 
     // 🔹 Delete habit
     const handleDelete = (id) => {
@@ -64,38 +107,7 @@ const MyHabits = () => {
         });
     };
 
-    // 🔹 Mark as Complete (prevent same-day duplicate)
-    // const handleMarkComplete = async (habit) => {
-    //     const today = new Date();
-    //     const formattedDate = today
-    //         .toLocaleDateString("en-GB")
-    //         .split("/")
-    //         .join("-"); // dd-mm-yyyy
-
-    //     if (habit.completionHistory.includes(formattedDate)) {
-    //         Swal.fire("Already Completed!", "You already marked this today.", "info");
-    //         return;
-    //     }
-
-    //     const updatedHistory = [...habit.completionHistory, formattedDate];
-
-    //     const res = await fetch(`http://localhost:3000/habits/${habit._id}`, {
-    //         method: "PATCH",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({ completionHistory: updatedHistory }),
-    //     });
-
-    //     if (res.ok) {
-    //         setHabits((prev) =>
-    //             prev.map((h) =>
-    //                 h._id === habit._id ? { ...h, completionHistory: updatedHistory } : h
-    //             )
-    //         );
-    //         Swal.fire("Great!", "Marked as completed for today!", "success");
-    //     }
-    // };
-
-    // 🔹 Mark as Complete (prevent same-day duplicate)
+    // 🔹 Mark as Complete
     const handleMarkComplete = async (habit) => {
         const today = new Date();
         const formattedDate = today
@@ -103,23 +115,23 @@ const MyHabits = () => {
             .split("/")
             .join("-"); // dd-mm-yyyy
 
-        // 🔸 প্রথমে UI-level check
         if (habit.completionHistory.includes(formattedDate)) {
             Swal.fire("Already Completed!", "You already marked this today.", "info");
             return;
         }
 
-        // 🔸 Server call to update using $addToSet
-        const res = await fetch(`http://localhost:3000/habits/complete/${habit._id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ date: formattedDate }),
-        });
+        const res = await fetch(
+            `http://localhost:3000/habits/complete/${habit._id}`,
+            {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ date: formattedDate }),
+            }
+        );
 
         const data = await res.json();
 
         if (data.success) {
-            // 🔸 Update local state immediately
             setHabits((prev) =>
                 prev.map((h) =>
                     h._id === habit._id
@@ -133,11 +145,11 @@ const MyHabits = () => {
         }
     };
 
-
-    if (loading) return <p className="text-center mt-10">Loading habits...</p>;
+    if (loading)
+        return <Loading></Loading>
 
     return (
-        <div className="container mx-auto  p-4 md:p-8">
+        <div className="container mx-auto px-4 py-8">
             <h2 className="text-2xl md:text-3xl font-bold text-[#096B68] mb-6 text-center">
                 My Habits
             </h2>
@@ -145,9 +157,9 @@ const MyHabits = () => {
             {habits.length === 0 ? (
                 <p className="text-center text-gray-600">No habits found.</p>
             ) : (
-                <div className="overflow-x-auto ">
-                    <table className="min-w-full border  border-gray-200 text-sm md:text-base">
-                        <thead className="bg-[#14a8a3]">
+                <div className="overflow-x-auto">
+                    <table className="min-w-full border border-gray-200 text-sm md:text-base">
+                        <thead className="bg-[#14a8a3] text-white">
                             <tr>
                                 <th className="p-3 text-left">Title</th>
                                 <th className="p-3 text-left">Category</th>
@@ -162,16 +174,20 @@ const MyHabits = () => {
                                     key={habit._id}
                                     className="border-b hover:bg-[#90D1CA]/20 transition"
                                 >
-                                    <td className="p-3 font-medium">{habit.habitTitle}</td>
-                                    <td className="p-3">{habit.category}</td>
-                                    <td className="p-3 text-center">
-                                        {calculateStreak(habit.completionHistory)} 🔥
+                                    <td className="p-3 font-medium text-gray-700">
+                                        {habit.habitTitle}
                                     </td>
-                                    <td className="p-3 text-center">{habit.createdDate}</td>
+                                    <td className="p-3">{habit.category}</td>
+                                    <td className="p-3 text-center font-semibold text-[#f47000]">
+                                        {calculateStreak(habit.completionHistory)} <Flame size={16} className="inline" />
+                                    </td>
+                                    <td className="p-3 text-center text-gray-600">
+                                        {habit.createdDate}
+                                    </td>
                                     <td className="p-3 flex flex-col md:flex-row gap-2 justify-center items-center">
                                         <Link
                                             to={`/update/${habit._id}`}
-                                            className="flex items-center gap-1 bg-[#90D1CA] text-black px-3 py-1 rounded-lg hover:bg-[#129990] hover:text-white transition"
+                                            className="flex items-center gap-1 bg-[#bfe7e3] text-black px-3 py-1 rounded-lg hover:bg-[#129990] hover:text-white transition"
                                         >
                                             <Pencil size={16} /> Update
                                         </Link>

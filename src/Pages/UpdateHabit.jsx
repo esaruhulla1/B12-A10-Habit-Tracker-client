@@ -138,13 +138,13 @@ const UpdateHabit = () => {
                         required
                         className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#096B68]"
                     />
-                    {habit.image && (
+                    {/* {habit.image && (
                         <img
                             src={habit.image}
                             alt="Habit"
                             className="mt-2 w-32 h-32 object-cover rounded-md border"
                         />
-                    )}
+                    )} */}
                 </div>
 
                 {/* User Name & Email (Read-only) */}

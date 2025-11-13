@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HabitCard from "../Components/HabitCard";
+import Loading from "../Components/Loading";
+import ErrorPage from "../Components/ErrorPage";
 
 const Habits = () => {
     const [data, setData] = useState([]);
@@ -57,16 +59,12 @@ const Habits = () => {
     // ✅ UI States
     if (loading)
         return (
-            <div className="text-center py-20 text-[#364436] text-lg font-semibold">
-                Loading Habits...
-            </div>
+            <Loading></Loading>
         );
 
     if (error)
         return (
-            <div className="text-center py-20 text-red-500 text-lg font-semibold">
-                Error: {error}
-            </div>
+            <ErrorPage></ErrorPage>
         );
 
     return (

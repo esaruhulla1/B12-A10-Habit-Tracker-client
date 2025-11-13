@@ -14,6 +14,8 @@ import AddHabit from './Pages/AddHabit.jsx';
 import MyHabits from './Pages/MyHabits.jsx';
 import UpdateHabit from './Pages/UpdateHabit.jsx';
 import HabitDetails from './Pages/HabitDetails.jsx';
+import ErrorPage from './Components/ErrorPage.jsx';
+import Loading from './Components/Loading.jsx';
 
 const router = createBrowserRouter([
   {
@@ -45,8 +47,8 @@ const router = createBrowserRouter([
         element: <PriveteRoute><HabitDetails></HabitDetails></PriveteRoute>
       },
       {
-        path: '/',
-        element: <p>hello</p>
+        path: '/loading',
+        element: <Loading></Loading>
       },
       {
         path: '/login',
@@ -58,6 +60,11 @@ const router = createBrowserRouter([
       },
     ]
   },
+  {
+    path: '*',
+    element: <ErrorPage></ErrorPage>
+  }
+  
 ]);
 
 createRoot(document.getElementById('root')).render(

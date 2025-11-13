@@ -39,7 +39,7 @@ const AppFeatures = () => {
           <img 
             src="https://images.unsplash.com/photo-1613732563096-1a00a46da7d4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170" 
             alt="App Illustration"
-            className="w-full  shadow-lg"
+            className="w-full rounded-lg shadow-lg"
           />
         </div>
 

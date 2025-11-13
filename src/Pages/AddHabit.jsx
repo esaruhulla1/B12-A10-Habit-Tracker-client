@@ -75,7 +75,7 @@ const AddHabit = () => {
         <section className="min-h-screen flex justify-center items-center px-4 py-10">
 
             <div className="bg-white shadow-xl rounded-3xl p-8 w-full max-w-2xl border border-[#90D1CA]/60">
-                <h2 className="text-3xl font-extrabold text-center text-[#096B68] mb-8">
+                <h2 className="text-2xl md:text-3xl font-extrabold text-center text-[#096B68] mb-8">
                     Add New Habit
                     <span className="block w-24 h-1 bg-gradient-to-r from-[#096B68] to-[#129990] rounded-full mt-3 mx-auto"></span>
                 </h2>

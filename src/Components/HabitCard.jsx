@@ -90,9 +90,9 @@ const HabitCard = ({ habit }) => {
           <p className="text-xs text-gray-400">📅 {createdDate}</p>
           <Link
             to={`/habit-details/${habit._id}`}
-            className="px-5 py-2 hover:underline underline-offset-3 hover:text-[#30c38d] font-semibold text-sm transition-all duration-300"
+            className="px-5 py-2 hover:underline text-[#096b68] underline-offset-3 hover:text-[#30c38d] font-semibold text-sm transition-all duration-300"
           >
-            View Details
+             View Details...
           </Link>
         </div>
       </div>

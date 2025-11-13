@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router';
 import Header_logo_2 from '../assets/Header-log.png';
 import { AuthContext } from '../Context/AuthContext';
 import { FaUserCircle } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Header = () => {
     const { user, singOutUser, loading } = useContext(AuthContext);
@@ -12,8 +13,23 @@ const Header = () => {
         try {
             await singOutUser();
             setDropdownOpen(false);
+            // SweetAlert2 popup
+            Swal.fire({
+                icon: "success",
+                title: "Logged Out",
+                text: "You have successfully logged out.",
+                timer: 2000,
+                showConfirmButton: false,
+                position: "top-end",
+                toast: true,
+            });
         } catch (error) {
             console.error("Logout failed", error);
+            Swal.fire({
+                icon: "error",
+                title: "Logout Failed",
+                text: "Something went wrong. Please try again.",
+            });
         }
     };
 
@@ -28,7 +44,8 @@ const Header = () => {
 
     return (
         <div className="bg-base-100 shadow-sm">
-            <div className="navbar max-w-[1820px] mx-auto">
+            {/* max-w-[1820px] */}
+            <div className="navbar container  mx-auto">
                 {/* LEFT */}
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -46,10 +63,10 @@ const Header = () => {
                     </div>
 
                     <div className='flex items-center gap-2'>
-                        <Link to="/" className="btn btn-ghost  -ml-2 text-xl">
-                            {/* <img className='max-w-[60px] -ml-4' src={Header_logo_2} alt="logo" /> */}
+                        <Link to="/" className="btn btn-ghost -ml-2 text-xl">
                             <img className='max-w-[50px] -ml-6' src={Header_logo_2} alt="logo" />
-                            <span className='-ml-2 -mb-2'>Habit Tracker</span></Link>
+                            <span className='-ml-2 -mb-2'>Habit Tracker</span>
+                        </Link>
                     </div>
                 </div>
 

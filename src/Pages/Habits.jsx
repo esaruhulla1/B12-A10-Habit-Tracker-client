@@ -15,7 +15,7 @@ const Habits = () => {
 
     // ✅ Fetch all habits
     useEffect(() => {
-        fetch("https://habit-tracker-server-g4ntwvrz4-esas-projects-36859535.vercel.app/habits")
+        fetch("https://habit-tracker-server-tau.vercel.app/habits")
             .then((response) => {
                 if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();

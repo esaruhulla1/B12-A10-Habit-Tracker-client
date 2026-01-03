@@ -14,7 +14,7 @@ const MyHabits = () => {
     // 🔹 Fetch user's own habits
     useEffect(() => {
         if (!user?.email) return;
-        fetch(`https://habit-tracker-server-g4ntwvrz4-esas-projects-36859535.vercel.app/${user.email}`)
+        fetch(`https://habit-tracker-server-tau.vercel.app/habits/${user.email}`)
             .then((res) => res.json())
             .then((data) => {
                 setHabits(data);
@@ -45,7 +45,7 @@ const MyHabits = () => {
     const calculateStreak = (history) => {
         if (!history || history.length === 0) return 0;
 
-        
+
         const sorted = history
             .map((d) => new Date(d.split("-").reverse().join("-")))
             .sort((a, b) => a - b);
@@ -61,7 +61,7 @@ const MyHabits = () => {
                 currentStreak++;
                 streak = Math.max(streak, currentStreak);
             } else {
-                
+
                 currentStreak = 1;
             }
         }
@@ -73,7 +73,7 @@ const MyHabits = () => {
             const diff =
                 (reversed[i - 1] - reversed[i]) / (1000 * 60 * 60 * 24);
             if (diff === 1) latestStreak++;
-            else break; 
+            else break;
         }
 
         return latestStreak;
@@ -92,7 +92,7 @@ const MyHabits = () => {
             confirmButtonText: "Yes, delete it!",
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`https://habit-tracker-server-g4ntwvrz4-esas-projects-36859535.vercel.app/${id}`, {
+                fetch(`https://habit-tracker-server-tau.vercel.app/habits/delete/${id}`, {
                     method: "DELETE",
                 })
                     .then((res) => res.json())
@@ -120,7 +120,7 @@ const MyHabits = () => {
         }
 
         const res = await fetch(
-            `https://habit-tracker-server-g4ntwvrz4-esas-projects-36859535.vercel.app/${habit._id}`,
+            `https://habit-tracker-server-tau.vercel.app/habits/complete/${habit._id}`,
             {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },

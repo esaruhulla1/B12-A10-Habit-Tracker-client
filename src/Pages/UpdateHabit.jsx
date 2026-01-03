@@ -10,7 +10,7 @@ const UpdateHabit = () => {
 
     
     useEffect(() => {
-        fetch(`https://habit-tracker-server-g4ntwvrz4-esas-projects-36859535.vercel.app/${id}`)
+        fetch(`https://habit-tracker-server-tau.vercel.app/habit/${id}`)
             .then((res) => res.json())
             .then((data) => {
                 setHabit(data);
@@ -28,7 +28,7 @@ const UpdateHabit = () => {
     
     const handleUpdate = (e) => {
         e.preventDefault();
-        fetch(`https://habit-tracker-server-g4ntwvrz4-esas-projects-36859535.vercel.app/${id}`, {
+        fetch(`https://habit-tracker-server-tau.vercel.app/habits/update/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -39,6 +39,7 @@ const UpdateHabit = () => {
                 image: habit.image,
             }),
         })
+        
             .then((res) => res.json())
             .then(() => {
                 Swal.fire({

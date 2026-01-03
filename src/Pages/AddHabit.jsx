@@ -30,7 +30,7 @@ const AddHabit = () => {
         };
 
         try {
-            const response = await fetch("https://habit-tracker-server-g4ntwvrz4-esas-projects-36859535.vercel.app/habits/add", {
+            const response = await fetch("https://habit-tracker-server-tau.vercel.app/habits/add", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newHabit),
@@ -200,50 +200,3 @@ const AddHabit = () => {
 export default AddHabit;
 
 
-// now please create add habits page
-//  Add Habit Page:
-// Users can add a habit with:
-// ● Habit Title
-
-// ● Description
-// ● Category (dropdown: Morning, Work, Fitness, Evening, Study, other's)
-// ● Reminder Time (You can use time picker)
-// ● Upload Image link
-// ● User Email
-// ● User Name
-// user এর দেয়া এই input  এছাড়াও createdDate": "",
-// completionHistory: [empty array] ডাটাবেজ এ যুক্ত হবে
-
-// Add Habit button → Save to DB → Success toast
-
-
-//  When you fill in the data and submit the Add button, this
-// data will be stored in your database and you will show a success message through toast  alert.
-
-
-// database এ ডাটা এরকম যাবে
-// {
-
-// "habitTitle": "Read 20 Pages",
-// "description": "Read at least 20 pages of a self-improvement or fiction book.",
-// "category": "Study",
-// "reminderTime": "08:00 PM",
-// "image": "https://i.ibb.co/rYbgdDm/image.png",
-// "userEmail": "oliver.smith@gmail.com",
-// "userName": "Oliver Smith",
-// "createdDate": "2025-11-09",
-// "completionHistory": []
-// },
-
-
-// Server side post apis:
-//     //  CREATE one
-//     app.post('/habits/add', async (req, res) => {
-//       try {
-//         const newHabit = req.body;
-//         const result = await usersCollection.insertOne(newHabit);
-//         res.status(201).json(result);
-//       } catch (err) {
-//         res.status(500).json({ message: 'Failed to create user', error: err });
-//       }
-//     });
